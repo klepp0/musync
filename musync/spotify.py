@@ -4,6 +4,7 @@ import spotipy
 from dotenv import load_dotenv
 
 from musync.entity import Playlist, Track, User
+from musync.error import PlaylistNotFoundError
 
 load_dotenv()
 
@@ -31,6 +32,11 @@ def load_playlist(playlist_name: str, user: User) -> Playlist:
     concrete_playlist = next(
         (p for p in owned_playlists if p.name == playlist_name), None
     )
+
+    if concrete_playlist is None:
+        raise PlaylistNotFoundError(
+            f"Playlist `{playlist_name}` not found in `{user.name}'s` (user_id={user.user_id}) playlists."
+        )
 
     return concrete_playlist
 
