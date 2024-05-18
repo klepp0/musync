@@ -1,74 +1,15 @@
-from __future__ import annotations
-
 import os
-from dataclasses import dataclass
 
 import spotipy
 from dotenv import load_dotenv
+
+from musync.entity import Playlist, Track, User
 
 load_dotenv()
 
 SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
 SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
-
-
-@dataclass
-class User:
-    user_id: str
-    name: str
-
-    @classmethod
-    def from_spotify(cls, user: dict) -> User:
-        return User(
-            user_id=user["id"],
-            name=user["display_name"],
-        )
-
-
-@dataclass
-class Playlist:
-    playlist_id: str
-    name: str
-    owner: str
-
-    @classmethod
-    def from_spotify(cls, playlist: dict) -> Playlist:
-        return Playlist(
-            playlist_id=playlist["id"],
-            name=playlist["name"],
-            owner=playlist["owner"]["id"],
-        )
-
-
-@dataclass
-class Track:
-    track_id: str
-    artist_id: str
-    name: str
-    date_added: str  # relates to playlist, requires better structure
-
-    @classmethod
-    def from_spotify(cls, track: dict) -> Track:
-        return Track(
-            track_id=track["track"]["id"],
-            name=track["track"]["name"],
-            artist_id=track["track"]["artists"][0]["id"],
-            date_added=track["added_at"],
-        )
-
-
-@dataclass
-class Artist:
-    artist_id: str
-    name: str
-
-    @classmethod
-    def from_spotify(cls, artist: dict) -> Artist:
-        return Artist(
-            artist_id=artist["id"],
-            name=artist["name"],
-        )
 
 
 def load_playlist(playlist_name: str, user: User) -> Playlist:
@@ -94,7 +35,7 @@ def load_playlist(playlist_name: str, user: User) -> Playlist:
     return concrete_playlist
 
 
-def load_tracks(playlist: Playlist) -> list[Tracks]:
+def load_tracks(playlist: Playlist) -> list[Track]:
     spotify_auth = spotipy.SpotifyOAuth(
         client_id=SPOTIFY_CLIENT_ID,
         client_secret=SPOTIFY_CLIENT_SECRET,
