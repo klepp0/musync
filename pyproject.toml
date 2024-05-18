@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "musync"
 version = "0.1.0"
-description = ""
+description = "Sync your music between different streaming platforms"
 authors = ["klepp0"]
 readme = "README.md"
+packages = [{ include = "musync" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
