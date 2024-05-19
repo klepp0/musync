@@ -1,5 +1,7 @@
 # 🎼 musync 🎶
 
+![Markdown Style](https://img.shields.io/badge/Markdown_Style-Prettier-ff69b4.svg) ![Markdown Lint](https://github.com/klepp0/musync/actions/workflows/markdown-lint.yml/badge.svg)
+
 Welcome to **musync**, the ultimate symphony conductor for your music libraries! Ever find yourself drowning in a sea of playlists between Spotify and Tidal? Wish your music could magically sync itself? Well, wish no more! **musync** is here to orchestrate harmony between your favorite music services.
 
 ## 🎤 What is this?
