@@ -8,6 +8,7 @@ class Playlist:
     playlist_id: str
     owner_id: str
     name: str
+    n_tracks: int
 
     @classmethod
     def from_spotify(cls, playlist: dict) -> Playlist:
@@ -15,4 +16,5 @@ class Playlist:
             playlist_id=playlist["id"],
             owner_id=playlist["owner"]["id"],
             name=playlist["name"],
+            n_tracks=playlist["tracks"]["total"],
         )
