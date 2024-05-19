@@ -14,7 +14,7 @@ class Track:
     def from_spotify(cls, track: dict) -> Track:
         return cls(
             track_id=track["track"]["id"],
-            name=track["track"]["name"],
             artist_id=track["track"]["artists"][0]["id"],
+            name=track["track"]["name"],
             date_added=track["added_at"],
         )
