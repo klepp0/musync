@@ -34,3 +34,4 @@ def test_playlist_from_spotify():
     assert playlist.playlist_id == MOCK_SPOTIFY_PLAYLIST_ITEM_RESPONSE["id"]
     assert playlist.owner_id == MOCK_SPOTIFY_PLAYLIST_ITEM_RESPONSE["owner"]["id"]
     assert playlist.name == MOCK_SPOTIFY_PLAYLIST_ITEM_RESPONSE["name"]
+    assert playlist.n_tracks == MOCK_SPOTIFY_PLAYLIST_ITEM_RESPONSE["tracks"]["total"]
