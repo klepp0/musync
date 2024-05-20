@@ -1,4 +1,4 @@
-from .user import User
+from .artist import Artist
 from .playlist import Playlist
 from .track import Track
-from .artist import Artist
+from .user import User
