@@ -23,12 +23,25 @@ def load_playlist(playlist_name: str, user: User) -> Playlist:
 
     spotify_client = spotipy.Spotify(auth_manager=spotify_auth)
 
-    owned_playlists_raw = spotify_client.current_user_playlists()
+    limit = 50
+    owned_playlists_raw = spotify_client.current_user_playlists(limit=limit, offset=0)
     owned_playlists = [
         Playlist.from_spotify(item)
         for item in owned_playlists_raw["items"]
         if item["owner"]["id"] == user.user_id
     ]
+    n_playlists = owned_playlists_raw["total"]
+
+    for offset in range(limit, n_playlists, limit):
+        owned_playlists_raw = spotify_client.current_user_playlists(
+            limit=limit, offset=offset
+        )
+        owned_playlists += [
+            Playlist.from_spotify(item)
+            for item in owned_playlists_raw["items"]
+            if item["owner"]["id"] == user.user_id
+        ]
+
     concrete_playlist = next(
         (p for p in owned_playlists if p.name == playlist_name), None
     )
@@ -52,10 +65,8 @@ def load_tracks(playlist: Playlist) -> list[Track]:
     spotify_client = spotipy.Spotify(auth_manager=spotify_auth)
 
     tracks = []
-    offset = 0
     limit = 100
-    tracks_remaining = True
-    while tracks_remaining:
+    for offset in range(0, playlist.n_tracks, limit):
         tracks_raw = spotify_client.playlist_tracks(
             playlist.playlist_id, limit=limit, offset=offset
         )
