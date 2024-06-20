@@ -14,8 +14,13 @@ def spotify_track():
         return pickle.load(f)
 
 
+@pytest.fixture
+def tidal_track():
+    with open(DATA_DIR / "test_track_tidal.pkl", "rb") as f:
+        return pickle.load(f)
+
+
 def test_track_from_spotify(spotify_track):
-    print(spotify_track)
     track = Track.from_spotify(spotify_track)
 
     assert track.track_id == "2yTFrY6qG6l46rfVtQDVim"
@@ -23,3 +28,11 @@ def test_track_from_spotify(spotify_track):
     assert track.name == "Sinnerman - Sofi Tukker Remix"
     assert track.date_added == "2024-02-10T14:17:45Z"
 
+
+def test_track_from_tidal(tidal_track):
+    track = Track.from_tidal(tidal_track)
+
+    assert track.track_id == "123456789"
+    assert track.artist_id == "18272666"
+    assert track.name == "Ovni"
+    assert track.date_added == "2023-12-29 16:00:34.856000+00:00"
