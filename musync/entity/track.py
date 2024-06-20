@@ -24,11 +24,11 @@ class Track:
     @classmethod
     def from_tidal(cls, track: tidal.Track) -> Track:
         return cls(
-            track_id="" if track.id is None else track.id,
+            track_id="" if track.id is None else str(track.id),
             artist_id=(
                 ""
                 if track.artist is None or track.artist.id is None
-                else track.artist.id
+                else str(track.artist.id)
             ),
             name="" if track.name is None else track.name,
             date_added="" if track.user_date_added is None else str(track.user_date_added),
