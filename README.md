@@ -1,6 +1,6 @@
 # 🎼 musync 🎶
 
-![Markdown Style](https://img.shields.io/badge/Markdown_Style-Prettier-ff69b4.svg) ![Markdown Lint](https://github.com/klepp0/musync/actions/workflows/markdown-lint.yml/badge.svg) ![Python Style](https://img.shields.io/badge/Python_Style-Black-000000.svg) ![Python Lint](https://github.com/klepp0/musync/actions/workflows/python-lint.yml/badge.svg) ![Test](https://github.com/klepp0/musync/actions/workflows/test.yml/badge.svg)
+![musync](./media/musync.png)
 
 <div align="center">
 
