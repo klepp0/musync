@@ -14,6 +14,9 @@ def load_playlist(playlist_name: str, session: tidal.session.Session) -> list[Pl
 
     raise PlaylistNotFoundError(f"{playlist_name=}, {user.username=}")
 
-def load_tracks(playlist: Playlist, session: tidal.Session) -> list[Playlist]:
-    return [Track.from_tidal(t) for t in tidal.Playlist(session, playlist.playlist_id).tracks()]
 
+def load_tracks(playlist: Playlist, session: tidal.Session) -> list[Playlist]:
+    return [
+        Track.from_tidal(t)
+        for t in tidal.Playlist(session, playlist.playlist_id).tracks()
+    ]

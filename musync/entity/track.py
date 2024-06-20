@@ -31,5 +31,7 @@ class Track:
                 else str(track.artist.id)
             ),
             name="" if track.name is None else track.name,
-            date_added="" if track.user_date_added is None else str(track.user_date_added),
+            date_added=(
+                "" if track.user_date_added is None else str(track.user_date_added)
+            ),
         )
