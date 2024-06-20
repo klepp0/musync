@@ -18,6 +18,7 @@ tidalapi = "^0.7.6"
 pytest-cov = "^5.0.0"
 black = "^24.4.2"
 isort = "^5.13.2"
+pylint = "^3.2.3"
 
 [build-system]
 requires = ["poetry-core"]
