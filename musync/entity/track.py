@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime as dt
+from typing import Optional
+import pytz
 
 import tidalapi as tidal
 
@@ -10,7 +13,7 @@ class Track:
     track_id: str
     artist_id: str
     name: str
-    date_added: Optional[str]  # relates to playlist, requires better structure
+    date_added: Optional[dt]  # relates to playlist, requires better structure
 
     @classmethod
     def from_spotify(cls, track: dict) -> Track:
@@ -18,7 +21,11 @@ class Track:
             track_id=track["track"]["id"],
             artist_id=track["track"]["artists"][0]["id"],
             name=track["track"]["name"],
-            date_added=track["added_at"],
+            date_added=(
+                None
+                if track["added_at"] is None
+                else dt.strptime(track["added_at"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=pytz.utc)
+            ),
         )
 
     @classmethod
@@ -32,6 +39,6 @@ class Track:
             ),
             name="" if track.name is None else track.name,
             date_added=(
-                "" if track.user_date_added is None else str(track.user_date_added)
+                None if track.user_date_added is None else track.user_date_added.replace(microsecond=0)
             ),
         )

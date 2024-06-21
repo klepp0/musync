@@ -1,7 +1,9 @@
 import pickle
+from datetime import datetime as dt
 from pathlib import Path
 
 import pytest
+import pytz
 
 from musync.entity import Track
 
@@ -26,7 +28,9 @@ def test_track_from_spotify(spotify_track):
     assert track.track_id == "2yTFrY6qG6l46rfVtQDVim"
     assert track.artist_id == "7G1GBhoKtEPnP86X2PvEYO"
     assert track.name == "Sinnerman - Sofi Tukker Remix"
-    assert track.date_added == "2024-02-10T14:17:45Z"
+    assert track.date_added == dt(2024, 2, 10, 14, 17, 45).replace(
+        tzinfo=pytz.utc
+    )  # 2024-02-10T14:17:45Z
 
 
 def test_track_from_tidal(tidal_track):
@@ -35,4 +39,6 @@ def test_track_from_tidal(tidal_track):
     assert track.track_id == "123456789"
     assert track.artist_id == "18272666"
     assert track.name == "Ovni"
-    assert track.date_added == "2023-12-29 16:00:34.856000+00:00"
+    assert track.date_added == dt(2023, 12, 29, 16, 0, 34).replace(
+        tzinfo=pytz.utc
+    )  # 2023-12-29 16:00:34.856000+00:00
