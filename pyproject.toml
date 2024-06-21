@@ -12,6 +12,7 @@ spotipy = "^2.23.0"
 ipykernel = "^6.29.4"
 python-dotenv = "^1.0.1"
 tidalapi = "^0.7.6"
+pytz = "^2024.1"
 
 
 [tool.poetry.group.dev.dependencies]
