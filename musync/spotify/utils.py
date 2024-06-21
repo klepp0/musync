@@ -71,9 +71,7 @@ def load_tracks(playlist: Playlist) -> list[Track]:
             playlist.playlist_id, limit=limit, offset=offset
         )
         tracks += [Track.from_spotify(track) for track in tracks_raw["items"]]
-        tracks_total = tracks_raw["total"]
         offset += limit
-        tracks_remaining = tracks_total > offset
 
     return tracks
 
