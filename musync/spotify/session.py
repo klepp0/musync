@@ -14,7 +14,7 @@ SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
 
 class SpotifySession(Session):
-    def __init__(self):
+    def __init__(self) -> None:
         spotify_auth = spotipy.SpotifyOAuth(
             client_id=SPOTIFY_CLIENT_ID,
             client_secret=SPOTIFY_CLIENT_SECRET,
@@ -24,15 +24,14 @@ class SpotifySession(Session):
         self._client = spotipy.Spotify(auth_manager=spotify_auth)
 
     @property
-    def user(self):
+    def user(self) -> User:
         return User.from_spotify(self._client.me())
 
-    def check_login(self):
+    def check_login(self) -> bool:
         try:
             self._client.me()
             return True
         except spotipy.exceptions.SpotifyException as e:
             if e.http_status == 401:
                 return False
-            else:
-                raise e
+            raise e
