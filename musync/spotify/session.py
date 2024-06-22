@@ -3,7 +3,8 @@ import os
 import spotipy
 from dotenv import load_dotenv
 
-from musync.entity import User
+from musync.entity import Playlist, User
+from musync.error import ConnectionError
 from musync.session import Session
 
 load_dotenv()
@@ -35,3 +36,22 @@ class SpotifySession(Session):
             if e.http_status == 401:
                 return False
             raise e
+
+    def get_playlists(self) -> list[Playlist]:
+        if not self.check_login():
+            raise ConnectionError("SpotifySession is not connected.")
+
+        limit = 50
+        playlist_response = self._client.current_user_playlists(limit=limit, offset=0)
+        playlists = [Playlist.from_spotify(item) for item in playlist_response["items"]]
+        n_playlists = playlist_response["total"]
+
+        for offset in range(limit, n_playlists, limit):
+            playlist_response = self._client.current_user_playlists(
+                limit=limit, offset=offset
+            )
+            playlists += [
+                Playlist.from_spotify(item) for item in playlist_response["items"]
+            ]
+
+        return playlists
