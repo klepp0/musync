@@ -1,9 +1,9 @@
-from musync.session import Session
-from musync.entity import User
-
 from pathlib import Path
 
 import tidalapi
+
+from musync.entity import User
+from musync.session import Session
 
 
 class TidalSession(Session):
