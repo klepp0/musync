@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     paths:
-      - '**/*.py'
+      - "**/*.py"
   pull_request:
     paths:
-      - '**/*.py'
+      - "**/*.py"
 
 jobs:
   unit-tests:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: "3.10"
 
       - name: Install Poetry
         run: |
@@ -31,3 +31,32 @@ jobs:
 
       - name: Run unit tests
         run: poetry run pytest tests/unittests/
+
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    environment: integration-tests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run integration tests
+        env:
+          SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID }}
+          SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET }}
+          SPOTIFY_REDIRECT_URI: ${{ secrets.SPOTIFY_REDIRECT_URI }}
+        run: poetry run pytest tests/integrationtests/
