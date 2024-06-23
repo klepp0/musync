@@ -1,7 +1,7 @@
 import pytest
 
 from musync.entity import Playlist, User
-from musync.spotify.session import SpotifySession
+from musync.spotify import SpotifySession
 
 
 @pytest.fixture
