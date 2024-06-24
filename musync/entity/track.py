@@ -7,6 +7,8 @@ from typing import Optional
 import pytz
 import tidalapi as tidal
 
+from musync.entity import Origin
+
 
 @dataclass
 class Track:
@@ -14,6 +16,7 @@ class Track:
     artist_id: str
     name: str
     date_added: Optional[dt]  # relates to playlist, requires better structure
+    origin: Origin = Origin.unknown
 
     @classmethod
     def from_spotify(cls, track: dict) -> Track:
@@ -28,6 +31,7 @@ class Track:
                     tzinfo=pytz.utc
                 )
             ),
+            origin=Origin.spotify,
         )
 
     @classmethod
@@ -45,4 +49,5 @@ class Track:
                 if track.user_date_added is None
                 else track.user_date_added.replace(microsecond=0)
             ),
+            origin=Origin.tidal,
         )
