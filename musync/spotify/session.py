@@ -4,7 +4,6 @@ import spotipy
 from dotenv import load_dotenv
 
 from musync.entity import Playlist, User
-from musync.error import ConnectionError
 from musync.session import Session
 
 load_dotenv()
