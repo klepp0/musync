@@ -34,9 +34,9 @@ SPOTIFY_REDIRECT_URI=<your-redirect-uri>
 
 You can look up the values for these variables in [Spotify's developer dashboard](https://developer.spotify.com/dashboard). For `SPOTIFY_REDIRECT_URI`, you can use `http://localhost:8080/callback` for local development. Make sure to add the URI to your Spotify App because even your app needs to know where the party is at.
 
-### 🎶 Tidal Setup (Coming Soon!)
+### 🎶 Tidal Setup
 
-Because syncing isn't just for Spotify! Stay tuned for updates on how to connect your Tidal account. For now, just enjoy the music.
+Tidal authenticates over the browser. When you run the project, you will see a link prompted in the stdout. Click on the link to open your browser and complete the authentication process. Easy peasy!
 
 ## 🥁 Features (or lack thereof)
 
@@ -54,17 +54,6 @@ Because syncing isn't just for Spotify! Stay tuned for updates on how to connect
 
 - Make sure your `SPOTIFY_REDIRECT_URI` is the same in both your `.env` file and Spotify developer settings. Otherwise, the music gods will frown upon you.
 - If something breaks, just turn it off and on again. Works every time.
-
-## 🤔 FAQ
-
-**Q: Why isn't Tidal syncing yet?**
-A: Because good things take time, my friend. Stay tuned!
-
-**Q: Can I use this for Apple Music?**
-A: No. But if you want to build that feature, PRs are welcome!
-
-**Q: Why does the sync take so long?**
-A: Patience is a virtue. Also, it’s probably a network thing. Blame the internet.
 
 ## 🙏 Acknowledgements
 
