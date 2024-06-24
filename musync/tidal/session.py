@@ -2,7 +2,7 @@ from pathlib import Path
 
 import tidalapi
 
-from musync.entity import User
+from musync.entity import Playlist, User
 from musync.session import Session
 
 
@@ -18,3 +18,6 @@ class TidalSession(Session):
 
     def check_login(self) -> bool:
         return self._client.check_login()
+
+    def get_playlists(self) -> list[Playlist]:
+        return [Playlist.from_tidal(p) for p in self._client.user.playlists()]
