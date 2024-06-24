@@ -4,7 +4,7 @@ from typing import Literal
 import spotipy
 import tidalapi
 
-from musync.entity import User
+from musync.entity import Playlist, User
 
 
 class Session(ABC):
@@ -17,4 +17,8 @@ class Session(ABC):
 
     @abstractmethod
     def check_login(self) -> bool:
+        pass
+
+    @abstractmethod
+    def get_playlists(self) -> list[Playlist]:
         pass
