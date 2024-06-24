@@ -5,10 +5,12 @@ import tidalapi
 from musync.entity import Playlist, User
 from musync.session import Session
 
+TIDAL_DIR = Path(__file__).parent.parent.parent.resolve()
+
 
 class TidalSession(Session):
     def __init__(self) -> None:
-        session_file = Path("tidal-session-oath.json")
+        session_file = TIDAL_DIR / "tidal-session-oauth.json"
         self._client = tidalapi.Session()
         self._client.login_session_file(session_file)
 
