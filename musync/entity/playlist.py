@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import tidalapi as tidal
 
-from musync.entity import Origin
+from musync.entity.origin import Origin
 
 
 @dataclass
@@ -13,7 +13,7 @@ class Playlist:
     owner_id: str
     name: str
     n_tracks: int
-    origin: Origin = Origin.unknown
+    origin: Origin = Origin.UNKNOWN
 
     @classmethod
     def from_spotify(cls, playlist: dict) -> Playlist:
@@ -22,7 +22,7 @@ class Playlist:
             owner_id=playlist["owner"]["id"],
             name=playlist["name"],
             n_tracks=playlist["tracks"]["total"],
-            origin=Origin.spotify,
+            origin=Origin.SPOTIFY,
         )
 
     @classmethod
@@ -36,5 +36,5 @@ class Playlist:
             ),
             name="" if playlist.name is None else playlist.name,
             n_tracks=playlist.num_tracks,
-            origin=Origin.tidal,
+            origin=Origin.TIDAL,
         )

@@ -4,21 +4,21 @@ from dataclasses import dataclass
 
 import tidalapi as tidal
 
-from musync.entity import Origin
+from musync.entity.origin import Origin
 
 
 @dataclass
 class User:
     user_id: str
     name: str
-    origin: Origin = Origin.unknown
+    origin: Origin = Origin.UNKNOWN
 
     @classmethod
     def from_spotify(cls, user: dict) -> User:
         return cls(
             user_id=user["id"],
             name=user["display_name"],
-            origin=Origin.spotify,
+            origin=Origin.SPOTIFY,
         )
 
     @classmethod
@@ -26,5 +26,5 @@ class User:
         return cls(
             user_id="" if user.id is None else str(user.id),
             name="" if user.username is None else user.username,
-            origin=Origin.tidal,
+            origin=Origin.TIDAL,
         )
