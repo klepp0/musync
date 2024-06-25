@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import spotipy
 import tidalapi
 
-from musync.entity import Playlist, User
+from musync.entity import Playlist, Track, User
 
 
 class Session(ABC):
@@ -20,4 +20,8 @@ class Session(ABC):
 
     @abstractmethod
     def get_playlists(self) -> list[Playlist]:
+        pass
+
+    @abstractmethod
+    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
         pass

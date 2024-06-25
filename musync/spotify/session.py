@@ -3,7 +3,7 @@ import os
 import spotipy
 from dotenv import load_dotenv
 
-from musync.entity import Playlist, User
+from musync.entity import Playlist, Track, User
 from musync.session import Session
 
 load_dotenv()
@@ -54,3 +54,15 @@ class SpotifySession(Session):
             ]
 
         return playlists
+
+    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
+        tracks = []
+        limit = 100
+        for offset in range(0, playlist.n_tracks, limit):
+            spotify_tracks = self._client.playlist_tracks(
+                playlist.playlist_id, limit=limit, offset=offset
+            )
+            tracks += [Track.from_spotify(t) for t in spotify_tracks["items"]]
+            offset += limit
+
+        return tracks
