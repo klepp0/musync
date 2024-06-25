@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Literal
 
 import spotipy
 import tidalapi
@@ -8,7 +7,7 @@ from musync.entity import Playlist, User
 
 
 class Session(ABC):
-    _client: Literal[spotipy.Spotify, tidalapi.Session]
+    _client: spotipy.Spotify | tidalapi.Session
 
     @property
     @abstractmethod
