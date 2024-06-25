@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from musync.entity import Playlist
+from musync.entity import Origin, Playlist
 
 DATA_DIR = Path(__file__).parent / "data"
 
@@ -27,6 +27,7 @@ def test_playlist_from_spotify(spotify_playlist):
     assert playlist.owner_id == "mockUserId"
     assert playlist.name == "Mock Playlist 🎶"
     assert playlist.n_tracks == 10
+    assert playlist.origin == Origin.SPOTIFY
 
 
 def test_playlist_from_tidal(tidal_playlist):
@@ -36,3 +37,4 @@ def test_playlist_from_tidal(tidal_playlist):
     assert playlist.owner_id == "123456789"
     assert playlist.name == "✨ Mock Playlist"
     assert playlist.n_tracks == 36
+    assert playlist.origin == Origin.TIDAL

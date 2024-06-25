@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 import pytz
 
-from musync.entity import Track
+from musync.entity import Origin, Track
 
 DATA_DIR = Path(__file__).parent / "data"
 
@@ -31,6 +31,7 @@ def test_track_from_spotify(spotify_track):
     assert track.date_added == dt(2024, 2, 10, 14, 17, 45).replace(
         tzinfo=pytz.utc
     )  # 2024-02-10T14:17:45Z
+    assert track.origin == Origin.SPOTIFY
 
 
 def test_track_from_tidal(tidal_track):
@@ -42,3 +43,4 @@ def test_track_from_tidal(tidal_track):
     assert track.date_added == dt(2023, 12, 29, 16, 0, 34).replace(
         tzinfo=pytz.utc
     )  # 2023-12-29 16:00:34.856000+00:00
+    assert track.origin == Origin.TIDAL
