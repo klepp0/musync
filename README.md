@@ -12,6 +12,13 @@
 
 </div>
 
+<div align="center">
+
+![Spotify](https://img.shields.io/badge/Spotify-1ED760?style=for-the-badge&logo=spotify&logoColor=white)
+![Tidal](https://img.shields.io/badge/tidal-00FFFF?style=for-the-badge&logo=tidal&logoColor=black)
+
+</div>
+
 Welcome to **musync**, the ultimate symphony conductor for your music libraries! Ever find yourself drowning in a sea of playlists between Spotify and Tidal? Wish your music could magically sync itself? Well, wish no more! **musync** is here to orchestrate harmony between your favorite music services.
 
 ## 🎤 What is this?
@@ -22,7 +29,7 @@ This project is built to sync my music. I'm using both Spotify and Tidal and I w
 
 While there aren't a ton of features yet (hey, Rome wasn't built in a day), there are a few requirements to get this musical maestro up and running. You'll need to set up some environment variables. In the current version, you can simply add a `.env` file to the project.
 
-### 🎵 Spotify Setup
+### 🎵 Spotify Setup ![Spotify](https://img.shields.io/badge/Spotify-1ED760?style=for-the-badge&logo=spotify&logoColor=white)
 
 In order to access private playlists, you will need to add the following environment variables to your `.env` file:
 
@@ -34,7 +41,7 @@ SPOTIFY_REDIRECT_URI=<your-redirect-uri>
 
 You can look up the values for these variables in [Spotify's developer dashboard](https://developer.spotify.com/dashboard). For `SPOTIFY_REDIRECT_URI`, you can use `http://localhost:8080/callback` for local development. Make sure to add the URI to your Spotify App because even your app needs to know where the party is at.
 
-### 🎶 Tidal Setup
+### 🎶 Tidal Setup ![Tidal](https://img.shields.io/badge/tidal-00FFFF?style=for-the-badge&logo=tidal&logoColor=black)
 
 Tidal authenticates over the browser. When you run the project, you will see a link prompted in the stdout. Click on the link to open your browser and complete the authentication process. Easy peasy!
 
