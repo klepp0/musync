@@ -3,7 +3,7 @@ import os
 import spotipy
 from dotenv import load_dotenv
 
-from musync.entity import Playlist, Track, User
+from musync.entity import Artist, Playlist, Track, User
 from musync.session import Session
 
 load_dotenv()
@@ -14,6 +14,8 @@ SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
 
 class SpotifySession(Session):
+    _client: spotipy.Spotify
+
     def __init__(self) -> None:
         spotify_auth = spotipy.SpotifyOAuth(
             client_id=SPOTIFY_CLIENT_ID,
@@ -31,12 +33,12 @@ class SpotifySession(Session):
         try:
             self._client.me()
             return True
-        except spotipy.exceptions.SpotifyException as e:
-            if e.http_status == 401:
+        except spotipy.exceptions.SpotifyException as exc:
+            if exc.http_status == 401:
                 return False
-            raise e
+            raise exc
 
-    def get_playlists(self) -> list[Playlist]:
+    def load_playlists(self) -> list[Playlist]:
         if not self.check_login():
             raise ConnectionError("SpotifySession is not connected.")
 
@@ -55,7 +57,7 @@ class SpotifySession(Session):
 
         return playlists
 
-    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
+    def load_playlist_tracks(self, playlist: Playlist) -> list[Track]:
         tracks = []
         limit = 100
         for offset in range(0, playlist.n_tracks, limit):
@@ -66,3 +68,23 @@ class SpotifySession(Session):
             offset += limit
 
         return tracks
+
+    def find_track(self, track: Track) -> Track | None:
+        query = track.name
+
+        search_response = self._client.search(query, type="track", limit=50)
+        tracks = [] if search_response is None else search_response["tracks"]["items"]
+
+        for tr in tracks:
+            loaded_track = Track.from_spotify(tr)
+            if track.equals(loaded_track):
+                return loaded_track
+
+        return None
+
+    def load_artist(self, artist_id: str) -> Artist | None:
+        artist = self._client.artist(artist_id)
+        if isinstance(artist, dict):
+            return Artist.from_spotify(artist)
+
+        return None

@@ -1,11 +1,9 @@
 import pickle
-from pathlib import Path
 
 import pytest
 
 from musync.entity import Origin, User
-
-DATA_DIR = Path(__file__).parent / "data"
+from tests.unittests.entity import DATA_DIR
 
 
 @pytest.fixture
