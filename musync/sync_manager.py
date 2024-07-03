@@ -15,8 +15,8 @@ class SyncManager:
         self._session2 = session2
 
     def get_common_playlists(self) -> list[Playlist]:
-        playlists1 = self._session1.get_playlists()
-        playlists2 = self._session2.get_playlists()
+        playlists1 = self._session1.load_playlists()
+        playlists2 = self._session2.load_playlists()
         common_playlists = []
         for playlist1 in playlists1:
             for playlist2 in playlists2:
@@ -32,14 +32,14 @@ class SyncManager:
             self._session1.user.origin == dest_playlist.origin
             and self._session1.user.user_id == dest_playlist.owner_id
         ):
-            src_tracks = self._session1.get_playlist_tracks(dest_playlist)
-            dest_tracks = self._session2.get_playlist_tracks(src_playlist)
+            src_tracks = self._session1.load_playlist_tracks(dest_playlist)
+            dest_tracks = self._session2.load_playlist_tracks(src_playlist)
         elif (
             self._session2.user.user_id == dest_playlist.owner_id
             and self._session2.user.origin == dest_playlist.origin
         ):
-            src_tracks = self._session2.get_playlist_tracks(dest_playlist)
-            dest_tracks = self._session1.get_playlist_tracks(src_playlist)
+            src_tracks = self._session2.load_playlist_tracks(dest_playlist)
+            dest_tracks = self._session1.load_playlist_tracks(src_playlist)
         else:
             raise ValueError(
                 "Invalid playlist"

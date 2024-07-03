@@ -23,10 +23,10 @@ class TidalSession(Session):
     def check_login(self) -> bool:
         return self._client.check_login()
 
-    def get_playlists(self) -> list[Playlist]:
+    def load_playlists(self) -> list[Playlist]:
         return [Playlist.from_tidal(p) for p in self._client.user.playlists()]
 
-    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
+    def load_playlist_tracks(self, playlist: Playlist) -> list[Track]:
         tidal_playlist = self._client.playlist(playlist.playlist_id)
 
         return [Track.from_tidal(t) for t in tidal_playlist.tracks()]

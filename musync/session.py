@@ -19,11 +19,11 @@ class Session(ABC):
         pass
 
     @abstractmethod
-    def get_playlists(self) -> list[Playlist]:
+    def load_playlists(self) -> list[Playlist]:
         pass
 
     @abstractmethod
-    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
+    def load_playlist_tracks(self, playlist: Playlist) -> list[Track]:
         pass
 
     @abstractmethod

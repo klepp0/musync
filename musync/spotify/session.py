@@ -38,7 +38,7 @@ class SpotifySession(Session):
                 return False
             raise exc
 
-    def get_playlists(self) -> list[Playlist]:
+    def load_playlists(self) -> list[Playlist]:
         if not self.check_login():
             raise ConnectionError("SpotifySession is not connected.")
 
@@ -57,7 +57,7 @@ class SpotifySession(Session):
 
         return playlists
 
-    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
+    def load_playlist_tracks(self, playlist: Playlist) -> list[Track]:
         tracks = []
         limit = 100
         for offset in range(0, playlist.n_tracks, limit):

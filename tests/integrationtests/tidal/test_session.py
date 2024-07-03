@@ -26,8 +26,8 @@ def test_session_user(tidal_session):
     assert isinstance(tidal_session.user, User)
 
 
-def test_session_get_playlists(tidal_session):
-    assert all(isinstance(p, Playlist) for p in tidal_session.get_playlists())
+def test_session_load_playlists(tidal_session):
+    assert all(isinstance(p, Playlist) for p in tidal_session.load_playlists())
 
 
 def test_search_track(tidal_session, spotify_track):

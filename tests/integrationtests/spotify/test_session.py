@@ -27,7 +27,7 @@ def test_session_user(spotify_session):
 
 
 def test_session_playlists(spotify_session):
-    assert all(isinstance(p, Playlist) for p in spotify_session.get_playlists())
+    assert all(isinstance(p, Playlist) for p in spotify_session.load_playlists())
 
 
 def test_find_track(spotify_session, tidal_track):
