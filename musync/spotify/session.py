@@ -3,7 +3,7 @@ import os
 import spotipy
 from dotenv import load_dotenv
 
-from musync.entity import Playlist, Track, User
+from musync.entity import Artist, Playlist, Track, User
 from musync.session import Session
 
 load_dotenv()
@@ -14,6 +14,8 @@ SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI")
 
 
 class SpotifySession(Session):
+    _client: spotipy.Spotify
+
     def __init__(self) -> None:
         spotify_auth = spotipy.SpotifyOAuth(
             client_id=SPOTIFY_CLIENT_ID,
@@ -66,3 +68,14 @@ class SpotifySession(Session):
             offset += limit
 
         return tracks
+
+    def find_track(self, track: Track) -> Track | None:
+        query = track.name
+        _type = "track"
+
+        tracks = self._client.search(query, type=_type, limit=50)["tracks"]["items"]
+
+        for t in tracks:
+            loaded_track = Track.from_spotify(t)
+            if track.equals(loaded_track):
+                return loaded_track
