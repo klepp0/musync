@@ -6,7 +6,7 @@ from datetime import timedelta
 from typing import Optional
 
 import pytz
-import tidalapi as tidal
+import tidalapi
 
 from musync.entity.origin import Origin
 
@@ -46,7 +46,7 @@ class Track:
         )
 
     @classmethod
-    def from_tidal(cls, track: tidal.Track) -> Track:
+    def from_tidal(cls, track: tidalapi.Track) -> Track:
         track_id = "" if track.id is None else str(track.id)
         artist_ids = (
             []
