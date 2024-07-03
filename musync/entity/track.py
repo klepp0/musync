@@ -22,28 +22,50 @@ class Track:
 
     @classmethod
     def from_spotify(cls, track: dict) -> Track:
-        track_id = "" if track["track"]["id"] is None else track["track"]["id"]
-        artist_ids = (
-            []
-            if track["track"]["artists"] is None
-            else [str(t["id"]) for t in track["track"]["artists"]]
-        )
-        name = "" if track["track"]["name"] is None else track["track"]["name"]
-        date_added = (
-            None
-            if track["added_at"] is None
-            else dt.strptime(track["added_at"], "%Y-%m-%dT%H:%M:%SZ").replace(
-                tzinfo=pytz.utc
+        if "track" in track.keys():
+            track_id = "" if track["track"]["id"] is None else track["track"]["id"]
+            artist_ids = (
+                []
+                if track["track"]["artists"] is None
+                else [str(t["id"]) for t in track["track"]["artists"]]
             )
-        )
+            name = "" if track["track"]["name"] is None else track["track"]["name"]
+            duration = timedelta(milliseconds=track["track"]["duration_ms"])
+            date_added = (
+                None
+                if track["added_at"] is None
+                else dt.strptime(track["added_at"], "%Y-%m-%dT%H:%M:%SZ").replace(
+                    tzinfo=pytz.utc
+                )
+            )
 
-        return cls(
-            track_id=track_id,
-            artist_ids=artist_ids,
-            name=name,
-            date_added=date_added,
-            origin=Origin.SPOTIFY,
-        )
+            return cls(
+                track_id=track_id,
+                artist_ids=artist_ids,
+                name=name,
+                duration=duration,
+                date_added=date_added,
+                origin=Origin.SPOTIFY,
+            )
+        else:
+            track_id = "" if track["id"] is None else track["id"]
+            artist_ids = (
+                []
+                if track["artists"] is None
+                else [str(t["id"]) for t in track["artists"]]
+            )
+            name = "" if track["name"] is None else track["name"]
+            duration = timedelta(milliseconds=track["duration_ms"])
+            origin = Origin.SPOTIFY
+
+            return cls(
+                track_id=track_id,
+                artist_ids=artist_ids,
+                name=name,
+                duration=duration,
+                date_added=None,
+                origin=origin,
+            )
 
     @classmethod
     def from_tidal(cls, track: tidalapi.Track) -> Track:
