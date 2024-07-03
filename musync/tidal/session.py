@@ -45,8 +45,7 @@ class TidalSession(Session):
 
     def load_artist(self, artist_id: str) -> Artist | None:
         artist = self._client.artist(int(artist_id))
-        match artist:
-            case tidalapi.Artist:
-                return Artist.from_tidal(artist)
-            case _:
-                return None
+        if not isinstance(artist, tidalapi.Artist):
+            return None
+
+        return Artist.from_tidal(artist)
