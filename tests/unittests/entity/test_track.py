@@ -21,6 +21,16 @@ def tidal_track():
         return pickle.load(f)
 
 
+@pytest.fixture
+def loaded_spotify_track(spotify_track):
+    return Track.from_spotify(spotify_track)
+
+
+@pytest.fixture
+def loaded_tidal_track(tidal_track):
+    return Track.from_tidal(tidal_track)
+
+
 def test_track_from_spotify(spotify_track):
     track = Track.from_spotify(spotify_track)
 
@@ -43,3 +53,28 @@ def test_track_from_tidal(tidal_track):
         tzinfo=pytz.utc
     )  # 2023-12-29 16:00:34.856000+00:00
     assert track.origin == Origin.TIDAL
+
+
+def test_equals_with_different_tracks(loaded_tidal_track, loaded_spotify_track):
+    assert not loaded_tidal_track.equals(loaded_spotify_track)
+    assert not loaded_spotify_track.equals(loaded_tidal_track)
+
+
+def test_equals_with_invalid_type(loaded_spotify_track, loaded_tidal_track):
+    with pytest.raises(TypeError):
+        loaded_spotify_track.equals("invalid")
+
+    with pytest.raises(TypeError):
+        loaded_tidal_track.equals("invalid")
+
+
+def test_equals_with_identical_tracks(loaded_spotify_track, loaded_tidal_track):
+    assert loaded_spotify_track.equals(loaded_spotify_track)
+    assert loaded_tidal_track.equals(loaded_tidal_track)
+
+
+def test_equals_with_same_track_from_different_platform(loaded_tidal_track):
+    track_dict = asdict(loaded_tidal_track)
+    track_dict["origin"] = Origin.UNKNOWN
+    other_track = Track(**track_dict)
+    assert loaded_tidal_track.equals(other_track)
