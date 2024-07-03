@@ -73,11 +73,7 @@ class SpotifySession(Session):
         query = track.name
 
         search_response = self._client.search(query, type="track", limit=50)
-        tracks = (
-            []
-            if search_response is None
-            else search_response["tracks"]["items"]
-        )
+        tracks = [] if search_response is None else search_response["tracks"]["items"]
 
         for tr in tracks:
             loaded_track = Track.from_spotify(tr)
