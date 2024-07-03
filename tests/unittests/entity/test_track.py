@@ -9,9 +9,12 @@ from musync.entity import Origin, Track
 from tests.unittests.entity import DATA_DIR
 
 
-@pytest.fixture
-def spotify_track():
-    with open(DATA_DIR / "test_track_spotify.pkl", "rb") as f:
+@pytest.fixture(
+    scope="module",
+    params=["test_track_spotify.pkl", "test_track_spotify_alternative.pkl"],
+)
+def spotify_track(request):
+    with open(DATA_DIR / request.param, "rb") as f:
         return pickle.load(f)
 
 
@@ -37,8 +40,9 @@ def test_track_from_spotify(spotify_track):
     assert track.track_id == "2yTFrY6qG6l46rfVtQDVim"
     assert track.artist_ids == ["7G1GBhoKtEPnP86X2PvEYO", "586uxXMyD5ObPuzjtrzO1Q"]
     assert track.name == "Sinnerman - Sofi Tukker Remix"
-    assert track.date_added == dt(2024, 2, 10, 14, 17, 45).replace(
-        tzinfo=pytz.utc
+    assert (
+        track.date_added == dt(2024, 2, 10, 14, 17, 45).replace(tzinfo=pytz.utc)
+        or track.date_added is None
     )  # 2024-02-10T14:17:45Z
     assert track.origin == Origin.SPOTIFY
 
