@@ -26,7 +26,7 @@ def test_track_from_spotify(spotify_track):
     track = Track.from_spotify(spotify_track)
 
     assert track.track_id == "2yTFrY6qG6l46rfVtQDVim"
-    assert track.artist_id == "7G1GBhoKtEPnP86X2PvEYO"
+    assert track.artist_ids == ["7G1GBhoKtEPnP86X2PvEYO", "586uxXMyD5ObPuzjtrzO1Q"]
     assert track.name == "Sinnerman - Sofi Tukker Remix"
     assert track.date_added == dt(2024, 2, 10, 14, 17, 45).replace(
         tzinfo=pytz.utc
@@ -38,7 +38,7 @@ def test_track_from_tidal(tidal_track):
     track = Track.from_tidal(tidal_track)
 
     assert track.track_id == "123456789"
-    assert track.artist_id == "18272666"
+    assert track.artist_ids == ["18272666"]
     assert track.name == "Ovni"
     assert track.date_added == dt(2023, 12, 29, 16, 0, 34).replace(
         tzinfo=pytz.utc
