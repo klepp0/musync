@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Iterable
 
 import spotipy
 import tidalapi
 
-from musync.entity import Artist, Playlist, Track, User
+from musync.entity import Playlist, Track, User
 
 
 class Session(ABC):
@@ -28,5 +27,5 @@ class Session(ABC):
         pass
 
     @abstractmethod
-    def find_track(self, track: Track):
+    def find_track(self, track: Track) -> Track | None:
         pass

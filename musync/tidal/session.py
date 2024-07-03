@@ -1,11 +1,9 @@
 from pathlib import Path
-from typing import Iterable
 
 import tidalapi
 
-from musync.entity import Artist, Origin, Playlist, Track, User
+from musync.entity import Artist, Playlist, Track, User
 from musync.session import Session
-from musync.tidal.utils import load_playlist
 
 TIDAL_DIR = Path(__file__).parent.parent.parent.resolve()
 
@@ -28,20 +26,27 @@ class TidalSession(Session):
     def get_playlists(self) -> list[Playlist]:
         return [Playlist.from_tidal(p) for p in self._client.user.playlists()]
 
-    def get_playlist_tracks(self, playlist: Playlist) -> list[Playlist]:
+    def get_playlist_tracks(self, playlist: Playlist) -> list[Track]:
         tidal_playlist = self._client.playlist(playlist.playlist_id)
 
         return [Track.from_tidal(t) for t in tidal_playlist.tracks()]
 
-    def find_track(
-        self, track: Track, artists: Iterable[Artist] = None
-    ) -> Track | None:
+    def find_track(self, track: Track) -> Track | None:
         query = track.name
-        models = [tidalapi.Track]
 
-        tracks = self._client.search(query, models=models)["tracks"]
+        tracks = self._client.search(query, models=[tidalapi.Track])["tracks"]
 
-        for t in tracks:
-            loaded_track = Track.from_tidal(t)
+        for tr in tracks:
+            loaded_track = Track.from_tidal(tr)
             if track.equals(loaded_track):
                 return loaded_track
+
+        return None
+
+    def load_artist(self, artist_id: str) -> Artist | None:
+        artist = self._client.artist(int(artist_id))
+        match artist:
+            case tidalapi.Artist:
+                return Artist.from_tidal(artist)
+            case _:
+                return None

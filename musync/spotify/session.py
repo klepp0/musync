@@ -33,10 +33,10 @@ class SpotifySession(Session):
         try:
             self._client.me()
             return True
-        except spotipy.exceptions.SpotifyException as e:
-            if e.http_status == 401:
+        except spotipy.exceptions.SpotifyException as exc:
+            if exc.http_status == 401:
                 return False
-            raise e
+            raise exc
 
     def get_playlists(self) -> list[Playlist]:
         if not self.check_login():
@@ -71,11 +71,24 @@ class SpotifySession(Session):
 
     def find_track(self, track: Track) -> Track | None:
         query = track.name
-        _type = "track"
 
-        tracks = self._client.search(query, type=_type, limit=50)["tracks"]["items"]
+        search_response = self._client.search(query, type="track", limit=50)
+        tracks = (
+            []
+            if search_response is None
+            else search_response["tracks"]["items"]
+        )
 
-        for t in tracks:
-            loaded_track = Track.from_spotify(t)
+        for tr in tracks:
+            loaded_track = Track.from_spotify(tr)
             if track.equals(loaded_track):
                 return loaded_track
+
+        return None
+
+    def load_artist(self, artist_id: str) -> Artist | None:
+        artist = self._client.artist(artist_id)
+        if isinstance(artist, dict):
+            return Artist.from_spotify(artist)
+
+        return None

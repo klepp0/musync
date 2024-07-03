@@ -48,25 +48,23 @@ class Track:
                 date_added=date_added,
                 origin=Origin.SPOTIFY,
             )
-        else:
-            track_id = "" if track["id"] is None else track["id"]
-            artist_ids = (
-                []
-                if track["artists"] is None
-                else [str(t["id"]) for t in track["artists"]]
-            )
-            name = "" if track["name"] is None else track["name"]
-            duration = timedelta(milliseconds=track["duration_ms"])
-            origin = Origin.SPOTIFY
 
-            return cls(
-                track_id=track_id,
-                artist_ids=artist_ids,
-                name=name,
-                duration=duration,
-                date_added=None,
-                origin=origin,
-            )
+        track_id = "" if track["id"] is None else track["id"]
+        artist_ids = (
+            [] if track["artists"] is None else [str(t["id"]) for t in track["artists"]]
+        )
+        name = "" if track["name"] is None else track["name"]
+        duration = timedelta(milliseconds=track["duration_ms"])
+        origin = Origin.SPOTIFY
+
+        return cls(
+            track_id=track_id,
+            artist_ids=artist_ids,
+            name=name,
+            duration=duration,
+            date_added=None,
+            origin=origin,
+        )
 
     @classmethod
     def from_tidal(cls, track: tidalapi.Track) -> Track:
