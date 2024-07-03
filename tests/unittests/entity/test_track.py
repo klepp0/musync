@@ -1,13 +1,12 @@
 import pickle
+from dataclasses import asdict
 from datetime import datetime as dt
-from pathlib import Path
 
 import pytest
 import pytz
 
 from musync.entity import Origin, Track
-
-DATA_DIR = Path(__file__).parent / "data"
+from tests.unittests.entity import DATA_DIR
 
 
 @pytest.fixture

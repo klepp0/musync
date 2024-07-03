@@ -2,6 +2,7 @@ import pytest
 
 from musync.entity import Playlist, User
 from musync.tidal import TidalSession
+from tests.unittests.entity import DATA_DIR
 
 
 @pytest.fixture

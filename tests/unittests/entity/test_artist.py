@@ -1,12 +1,9 @@
 import pickle
-from datetime import datetime as dt
-from pathlib import Path
 
 import pytest
 
 from musync.entity import Artist, Origin
-
-DATA_DIR = Path(__file__).parent / "data"
+from tests.unittests.entity import DATA_DIR
 
 
 @pytest.fixture
