@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime as dt
+from datetime import timedelta
 from typing import Optional
 
 import pytz
@@ -15,6 +16,7 @@ class Track:
     track_id: str
     artist_ids: list[str]
     name: str
+    duration: timedelta
     date_added: Optional[dt]  # relates to playlist, requires better structure
     origin: Origin = Origin.UNKNOWN
 
@@ -52,6 +54,11 @@ class Track:
             else [str(artist.id) for artist in track.artists]
         )
         name = "" if track.name is None else track.name
+        duration = (
+            timedelta(seconds=-1)
+            if track.duration is None
+            else timedelta(seconds=track.duration)
+        )
         date_added = (
             None
             if track.user_date_added is None
@@ -62,6 +69,7 @@ class Track:
             track_id=track_id,
             artist_ids=artist_ids,
             name=name,
+            duration=duration,
             date_added=date_added,
             origin=Origin.TIDAL,
         )
