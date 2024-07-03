@@ -9,6 +9,7 @@ import pytz
 import tidalapi
 
 from musync.entity.origin import Origin
+from musync.entity.utils import normalize_str
 
 
 @dataclass
@@ -95,3 +96,19 @@ class Track:
             date_added=date_added,
             origin=Origin.TIDAL,
         )
+
+    def equals(self, other: Track) -> bool:
+        if not isinstance(other, Track):
+            raise TypeError(f"Expected Track, got {type(other)}")
+
+        tracks_are_equal = (
+            normalize_str(self.name) == normalize_str(other.name)
+            and abs(self.duration - other.duration).seconds < 2
+        )
+
+        if not tracks_are_equal or self.origin != other.origin:
+            return tracks_are_equal
+
+        tracks_are_equal = set(self.artist_ids) == set(other.artist_ids)
+
+        return tracks_are_equal
