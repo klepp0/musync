@@ -1,10 +1,12 @@
+import warnings
 from typing import Iterable
 
 import tidalapi
 
 from musync import ROOT_DIR
 from musync.common.entity import Artist, Origin, Playlist, Track, User
-from musync.common.error import IncompatibleEntityError, MissingPrivilegesError
+from musync.common.error import (IncompatibleEntityError,
+                                 MissingPrivilegesError, NotConnectedWarning)
 from musync.common.session import Session
 
 
@@ -15,6 +17,8 @@ class TidalSession(Session):
         session_file = ROOT_DIR / "tidal-session-oauth.json"
         self._client = tidalapi.Session()
         self._client.login_session_file(session_file)
+        if not self.check_login():
+            warnings.warn("TidalSession is not connected.", NotConnectedWarning)
 
     @property
     def user(self) -> User:

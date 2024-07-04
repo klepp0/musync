@@ -12,3 +12,7 @@ class IncompatibleEntityError(Exception):
 
 class TrackNotFoundWarning(Warning):
     """Raised when a track is not found in the database."""
+
+
+class NotConnectedWarning(Warning):
+    """Raised when a user is not connected to a service."""

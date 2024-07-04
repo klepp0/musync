@@ -1,10 +1,12 @@
 import os
+import warnings
 from typing import Iterable
 
 import spotipy
 from dotenv import load_dotenv
 
 from musync.common.entity import Artist, Origin, Playlist, Track, User
+from musync.common.error import NotConnectedWarning
 from musync.common.session import Session
 
 load_dotenv()
@@ -25,6 +27,8 @@ class SpotifySession(Session):
             scope="playlist-read-private",
         )
         self._client = spotipy.Spotify(auth_manager=spotify_auth)
+        if not self.check_login():
+            warnings.warn("SpotifySession is not connected.", NotConnectedWarning)
 
     @property
     def user(self) -> User:
