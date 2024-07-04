@@ -90,10 +90,8 @@ def test_find_track(spotify_session, tidal_track):
 def test_add_to_playlist(spotify_session, create_playlist, spotify_track_list):
     playlist = create_playlist
     n_tracks_before = playlist.n_tracks
-    spotify_session.add_to_playlist(playlist, spotify_track_list)
-
-    spotify_response = spotify_session._client.playlist(playlist.playlist_id)
-    updated_playlist = Playlist.from_spotify(spotify_response)
+    updated_playlist = spotify_session.add_to_playlist(playlist, spotify_track_list)
     n_tracks_after = updated_playlist.n_tracks
 
+    assert playlist.playlist_id == updated_playlist.playlist_id
     assert n_tracks_before < n_tracks_after
