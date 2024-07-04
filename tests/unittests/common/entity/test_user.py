@@ -2,8 +2,8 @@ import pickle
 
 import pytest
 
-from musync.entity import Origin, User
-from tests.unittests.entity import DATA_DIR
+from musync.common.entity import Origin, User
+from tests.unittests.common.entity import DATA_DIR
 
 
 @pytest.fixture

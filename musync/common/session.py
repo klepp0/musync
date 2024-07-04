@@ -4,7 +4,7 @@ from typing import Iterable
 import spotipy
 import tidalapi
 
-from musync.entity import Playlist, Track, User
+from musync.common.entity import Playlist, Track, User
 
 
 class Session(ABC):

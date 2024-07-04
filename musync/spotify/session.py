@@ -4,8 +4,8 @@ from typing import Iterable
 import spotipy
 from dotenv import load_dotenv
 
-from musync.entity import Artist, Origin, Playlist, Track, User
-from musync.session import Session
+from musync.common.entity import Artist, Origin, Playlist, Track, User
+from musync.common import Session
 
 load_dotenv()
 

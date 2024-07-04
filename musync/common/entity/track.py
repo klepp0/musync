@@ -8,8 +8,8 @@ from typing import Optional
 import pytz
 import tidalapi
 
-from musync.entity.origin import Origin
-from musync.entity.utils import normalize_str
+from musync.common.entity.origin import Origin
+from musync.common.entity.utils import normalize_str
 
 
 @dataclass(frozen=True, slots=True)

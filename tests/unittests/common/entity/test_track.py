@@ -5,8 +5,8 @@ from datetime import datetime as dt
 import pytest
 import pytz
 
-from musync.entity import Origin, Track
-from tests.unittests.entity import DATA_DIR
+from musync.common.entity import Origin, Track
+from tests.unittests.common.entity import DATA_DIR
 
 
 @pytest.fixture(

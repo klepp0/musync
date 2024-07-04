@@ -3,9 +3,9 @@ import pickle
 
 import pytest
 
-from musync.entity import Origin, Playlist, Track, User
+from musync.common.entity import Origin, Playlist, Track, User
 from musync.spotify import SpotifySession
-from tests.unittests.entity import DATA_DIR
+from tests.unittests.common.entity import DATA_DIR
 
 
 @pytest.fixture

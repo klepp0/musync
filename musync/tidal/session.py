@@ -1,20 +1,18 @@
-from pathlib import Path
 from typing import Iterable
 
 import tidalapi
 
-from musync.entity import Artist, Origin, Playlist, Track, User
-from musync.error import IncompatibleEntityError, MissingPrivilegesError
-from musync.session import Session
-
-TIDAL_DIR = Path(__file__).parent.parent.parent.resolve()
+from musync import ROOT_DIR
+from musync.common.entity import Artist, Origin, Playlist, Track, User
+from musync.common.error import IncompatibleEntityError, MissingPrivilegesError
+from musync.common.session import Session
 
 
 class TidalSession(Session):
     _client: tidalapi.Session
 
     def __init__(self) -> None:
-        session_file = TIDAL_DIR / "tidal-session-oauth.json"
+        session_file = ROOT_DIR / "tidal-session-oauth.json"
         self._client = tidalapi.Session()
         self._client.login_session_file(session_file)
 
