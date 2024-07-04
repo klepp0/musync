@@ -2,8 +2,8 @@ import warnings
 
 from musync.common.entity import Playlist, Track
 from musync.common.error import MissingPrivilegesError, TrackNotFoundWarning
-from musync.spotify import SpotifySession
-from musync.tidal import TidalSession
+from musync.spotify.session import SpotifySession
+from musync.tidal.session import TidalSession
 
 SessionType = SpotifySession | TidalSession
 

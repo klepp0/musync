@@ -1,6 +1,6 @@
 import pytest
 
-from musync.common import SyncManager
+from musync.common.sync_manager import SyncManager
 from musync.common.entity import Playlist, Track
 from musync.spotify import SpotifySession
 from musync.tidal import TidalSession

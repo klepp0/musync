@@ -5,7 +5,7 @@ import spotipy
 from dotenv import load_dotenv
 
 from musync.common.entity import Artist, Origin, Playlist, Track, User
-from musync.common import Session
+from musync.common.session import Session
 
 load_dotenv()
 
