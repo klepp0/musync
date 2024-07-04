@@ -32,5 +32,5 @@ class Session(ABC):
         pass
 
     @abstractmethod
-    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> None:
+    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> Playlist:
         pass

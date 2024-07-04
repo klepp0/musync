@@ -54,7 +54,7 @@ class TidalSession(Session):
 
         return Artist.from_tidal(artist)
 
-    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> None:
+    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> Playlist:
         if playlist.origin != Origin.TIDAL:
             raise IncompatibleEntityError(f"Playlist is not from Tidal ({playlist=}).")
 
@@ -71,3 +71,5 @@ class TidalSession(Session):
         track_ids = [tr.track_id for tr in tracks]
         tidal_playlist = self._client.playlist(playlist.playlist_id)
         tidal_playlist.add(track_ids)
+
+        return Playlist.from_tidal(tidal_playlist)

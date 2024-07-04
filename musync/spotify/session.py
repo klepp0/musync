@@ -94,7 +94,7 @@ class SpotifySession(Session):
 
         return None
 
-    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> None:
+    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> Playlist:
         if playlist.origin != Origin.SPOTIFY:
             raise ValueError(f"Playlist is not from Spotify ({playlist=}).")
 
@@ -112,3 +112,6 @@ class SpotifySession(Session):
         playlist_id = playlist.playlist_id
         track_ids = [tr.track_id for tr in tracks]
         self._client.user_playlist_add_tracks(user_id, playlist_id, track_ids)
+        client_response = self._client.playlist(playlist_id)
+
+        return Playlist.from_spotify(client_response)
