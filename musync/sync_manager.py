@@ -45,6 +45,4 @@ class SyncManager:
                 "Invalid playlist"
             )  # TODO: Create more expressive custom error
 
-        dest_track_names = [t.name for t in dest_tracks]
-
-        return [t for t in src_tracks if t.name not in dest_track_names]
+        return [st for st in src_tracks if all(not st.equals(dt) for dt in dest_tracks)]
