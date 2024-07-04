@@ -7,7 +7,7 @@ import tidalapi as tidal
 from musync.entity.origin import Origin
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class Playlist:
     playlist_id: str
     owner_id: str
