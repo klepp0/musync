@@ -12,7 +12,7 @@ from musync.entity.origin import Origin
 from musync.entity.utils import normalize_str
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class Track:
     track_id: str
     artist_ids: list[str]
