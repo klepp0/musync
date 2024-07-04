@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Iterable
 
 import spotipy
 import tidalapi
@@ -28,4 +29,8 @@ class Session(ABC):
 
     @abstractmethod
     def find_track(self, track: Track) -> Track | None:
+        pass
+
+    @abstractmethod
+    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> None:
         pass
