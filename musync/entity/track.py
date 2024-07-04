@@ -18,7 +18,7 @@ class Track:
     artist_ids: list[str]
     name: str
     duration: timedelta
-    date_added: Optional[dt]  # relates to playlist, requires better structure
+    date_added: Optional[dt] = None  # relates to playlist, requires better structure
     origin: Origin = Origin.UNKNOWN
 
     @classmethod

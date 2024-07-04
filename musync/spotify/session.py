@@ -1,9 +1,10 @@
 import os
+from typing import Iterable
 
 import spotipy
 from dotenv import load_dotenv
 
-from musync.entity import Artist, Playlist, Track, User
+from musync.entity import Artist, Origin, Playlist, Track, User
 from musync.session import Session
 
 load_dotenv()
@@ -88,3 +89,22 @@ class SpotifySession(Session):
             return Artist.from_spotify(artist)
 
         return None
+
+    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> None:
+        if playlist.origin != Origin.SPOTIFY:
+            raise ValueError(f"Playlist is not from Spotify ({playlist=}).")
+
+        if not all(tr.origin == Origin.SPOTIFY for tr in tracks):
+            raise ValueError(
+                f"The tracks contain tracks that are not from Spotify ({tracks=})."
+            )
+
+        if self.user.user_id != playlist.owner_id:
+            raise ValueError(
+                f"The session user does not own the playlist ({playlist=})."
+            )
+
+        user_id = self.user.user_id
+        playlist_id = playlist.playlist_id
+        track_ids = [tr.track_id for tr in tracks]
+        self._client.user_playlist_add_tracks(user_id, playlist_id, track_ids)

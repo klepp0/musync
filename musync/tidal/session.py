@@ -1,8 +1,10 @@
 from pathlib import Path
+from typing import Iterable
 
 import tidalapi
 
-from musync.entity import Artist, Playlist, Track, User
+from musync.entity import Artist, Origin, Playlist, Track, User
+from musync.error import IncompatibleEntityError, MissingPrivilegesError
 from musync.session import Session
 
 TIDAL_DIR = Path(__file__).parent.parent.parent.resolve()
@@ -44,8 +46,26 @@ class TidalSession(Session):
         return None
 
     def load_artist(self, artist_id: str) -> Artist | None:
-        artist = self._client.artist(int(artist_id))
+        artist = self._client.artist(artist_id)
         if not isinstance(artist, tidalapi.Artist):
             return None
 
         return Artist.from_tidal(artist)
+
+    def add_to_playlist(self, playlist: Playlist, tracks: Iterable[Track]) -> None:
+        if playlist.origin != Origin.TIDAL:
+            raise IncompatibleEntityError(f"Playlist is not from Tidal ({playlist=}).")
+
+        if not all(tr.origin == Origin.TIDAL for tr in tracks):
+            raise IncompatibleEntityError(
+                f"The tracks contain tracks that are not from Tidal ({tracks=})."
+            )
+
+        if self.user.user_id != playlist.owner_id:
+            raise MissingPrivilegesError(
+                f"The session user does not own the playlist ({playlist=})."
+            )
+
+        track_ids = [tr.track_id for tr in tracks]
+        tidal_playlist = self._client.playlist(playlist.playlist_id)
+        tidal_playlist.add(track_ids)

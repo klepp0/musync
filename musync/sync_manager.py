@@ -1,4 +1,7 @@
+import warnings
+
 from musync.entity import Playlist, Track
+from musync.error import MissingPrivilegesError, TrackNotFoundWarning
 from musync.spotify import SpotifySession
 from musync.tidal import TidalSession
 
@@ -14,7 +17,7 @@ class SyncManager:
         self._session1 = session1
         self._session2 = session2
 
-    def get_common_playlists(self) -> list[Playlist]:
+    def get_common_playlists(self) -> list[tuple[Playlist, Playlist]]:
         playlists1 = self._session1.load_playlists()
         playlists2 = self._session2.load_playlists()
         common_playlists = []
@@ -28,23 +31,77 @@ class SyncManager:
     def get_missing_tracks(
         self, src_playlist: Playlist, dest_playlist: Playlist
     ) -> list[Track]:
-        if (
-            self._session1.user.origin == dest_playlist.origin
-            and self._session1.user.user_id == dest_playlist.owner_id
-        ):
-            src_tracks = self._session1.load_playlist_tracks(dest_playlist)
-            dest_tracks = self._session2.load_playlist_tracks(src_playlist)
-        elif (
-            self._session2.user.user_id == dest_playlist.owner_id
-            and self._session2.user.origin == dest_playlist.origin
-        ):
-            src_tracks = self._session2.load_playlist_tracks(dest_playlist)
-            dest_tracks = self._session1.load_playlist_tracks(src_playlist)
+        if src_playlist.origin == self._session1.user.origin:
+            src_session = self._session1
+        elif src_playlist.origin == self._session2.user.origin:
+            src_session = self._session2
         else:
-            raise ValueError(
-                "Invalid playlist"
-            )  # TODO: Create more expressive custom error
+            raise MissingPrivilegesError(
+                f"The user does not have access to the source playlist ({src_playlist=})"
+            )
 
-        dest_track_names = [t.name for t in dest_tracks]
+        if (
+            dest_playlist.origin == self._session1.user.origin
+            and dest_playlist.owner_id == self._session1.user.user_id
+        ):
+            dest_session = self._session1
+        elif (
+            dest_playlist.origin == self._session2.user.origin
+            and dest_playlist.owner_id == self._session2.user.user_id
+        ):
+            dest_session = self._session2
+        else:
+            raise MissingPrivilegesError(
+                f"The user does not have access to the destination playlist ({dest_playlist=})"
+            )
 
-        return [t for t in src_tracks if t.name not in dest_track_names]
+        src_tracks = src_session.load_playlist_tracks(src_playlist)
+        dest_tracks = dest_session.load_playlist_tracks(dest_playlist)
+
+        return [st for st in src_tracks if all(not st.equals(dt) for dt in dest_tracks)]
+
+    def sync_common_playlists(self) -> None:
+        common_playlists = self.get_common_playlists()
+
+        for src_playlist, dest_playlist in common_playlists:
+            if dest_playlist.owner_id == self._session2.user.user_id:
+                self.sync_playlists(src_playlist, dest_playlist)
+
+        for dest_playlist, src_playlist in common_playlists:
+            if dest_playlist.owner_id == self._session1.user.user_id:
+                self.sync_playlists(src_playlist, dest_playlist)
+
+    def sync_playlists(self, src_playlist, dest_playlist) -> None:
+        if (
+            dest_playlist.origin == self._session1.user.origin
+            and dest_playlist.owner_id == self._session1.user.user_id
+        ):
+            dest_session = self._session1
+        elif (
+            dest_playlist.origin == self._session2.user.origin
+            and dest_playlist.owner_id == self._session2.user.user_id
+        ):
+            dest_session = self._session2
+        else:
+            raise MissingPrivilegesError(
+                f"The user does not have access to the destination playlist ({dest_playlist=})"
+            )
+
+        missing_tracks_src = self.get_missing_tracks(src_playlist, dest_playlist)
+        missing_tracks_dest = []
+        for src_track in missing_tracks_src:
+            if src_track.origin == dest_session.user.origin:
+                dest_track = src_track
+            else:
+                dest_track = dest_session.find_track(src_track)
+
+            if dest_track is None:
+                warnings.warn(
+                    f"Track {src_track} not found in {dest_session}",
+                    TrackNotFoundWarning,
+                )
+            else:
+                missing_tracks_dest.append(dest_track)
+
+        if len(missing_tracks_dest) > 0:
+            dest_session.add_to_playlist(dest_playlist, missing_tracks_dest)
