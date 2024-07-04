@@ -56,9 +56,11 @@ def tidal_track_list():
 @pytest.fixture
 def create_playlist(tidal_session):
     title = "Test Playlist"
-    description = "This playlist was created by https://github.com/klepp0/musync"
-    new_tidal_playlist = tidal_session._client.user.create_playlist(title, description)
-    new_playlist = Playlist.from_tidal(new_tidal_playlist)
+    description = (
+        "This playlist was created by the https://github.com/klepp0/musync project."
+    )
+    tidal_response = tidal_session._client.user.create_playlist(title, description)
+    new_playlist = Playlist.from_tidal(tidal_response)
 
     yield new_playlist
 
@@ -87,8 +89,8 @@ def test_add_to_playlist(tidal_session, create_playlist, tidal_track_list):
     n_tracks_before = playlist.n_tracks
     tidal_session.add_to_playlist(playlist, tidal_track_list)
 
-    updated_tidal_playlist = tidal_session._client.playlist(playlist.playlist_id)
-    updated_playlist = Playlist.from_tidal(updated_tidal_playlist)
+    tidal_response = tidal_session._client.playlist(playlist.playlist_id)
+    updated_playlist = Playlist.from_tidal(tidal_response)
     n_tracks_after = updated_playlist.n_tracks
 
     assert n_tracks_before < n_tracks_after
