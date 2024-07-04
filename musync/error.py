@@ -8,3 +8,7 @@ class MissingPrivilegesError(Exception):
 
 class IncompatibleEntityError(Exception):
     """Raised when an entity is not compatible with the operation."""
+
+
+class TrackNotFoundWarning(Warning):
+    """Raised when a track is not found in the database."""
