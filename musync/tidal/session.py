@@ -5,8 +5,11 @@ import tidalapi
 
 from musync import ROOT_DIR
 from musync.common.entity import Artist, Origin, Playlist, Track, User
-from musync.common.error import (IncompatibleEntityError,
-                                 MissingPrivilegesError, NotConnectedWarning)
+from musync.common.error import (
+    IncompatibleEntityError,
+    MissingPrivilegesError,
+    NotConnectedWarning,
+)
 from musync.common.session import Session
 
 
