@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 import tidalapi as tidal
 
-from musync.common.entity.origin import Origin
+from .origin import Origin
 
 
 @dataclass(frozen=True, slots=True)

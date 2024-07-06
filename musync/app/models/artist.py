@@ -3,7 +3,7 @@ from __future__ import annotations
 import tidalapi
 from pydantic import BaseModel
 
-from musync.common.entity.origin import Origin
+from .origin import Origin
 
 
 class Artist(BaseModel):

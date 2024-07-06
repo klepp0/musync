@@ -7,8 +7,9 @@ import pytz
 import tidalapi
 from pydantic import BaseModel
 
-from musync.common.entity import Origin
 from musync.common.entity.utils import normalize_str
+
+from .origin import Origin
 
 
 class Track(BaseModel):
@@ -16,7 +17,7 @@ class Track(BaseModel):
     artist_ids: List[str]
     name: str
     duration: dt.timedelta
-    date_added: Optional[dt.datetime]
+    date_added: Optional[dt.datetime] = None
     origin: Origin = Origin.UNKNOWN
 
     @classmethod
