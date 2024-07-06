@@ -2,9 +2,11 @@ import warnings
 from typing import Iterable
 
 import tidalapi
+import tidalapi.exceptions
 
+# from musync.common.entity import Artist, Origin, Playlist, Track, User
 from musync import ROOT_DIR
-from musync.common.entity import Artist, Origin, Playlist, Track, User
+from musync.app.models import Artist, Origin, Playlist, Track, User
 from musync.common.error import (
     IncompatibleEntityError,
     MissingPrivilegesError,
@@ -29,6 +31,13 @@ class TidalSession(Session):
 
     def check_login(self) -> bool:
         return self._client.check_login()
+
+    def load_playlist(self, playlist_id) -> Playlist | None:
+        try:
+            playlist_response = self._client.playlist(playlist_id)
+            return Playlist.from_tidal(playlist_response)
+        except tidalapi.exceptions.ObjectNotFound:
+            return None
 
     def load_playlists(self) -> list[Playlist]:
         return [Playlist.from_tidal(p) for p in self._client.user.playlists()]
@@ -76,3 +85,22 @@ class TidalSession(Session):
         tidal_playlist.add(track_ids)
 
         return Playlist.from_tidal(tidal_playlist)
+
+    def create_playlist(
+        self,
+        title: str,
+        description: str = "This playlist was created by https://github.com/klepp0/musync 🎺",
+    ) -> Playlist:
+        playlist_response = self._client.user.create_playlist(
+            title,
+            description,
+        )
+
+        return Playlist.from_tidal(playlist_response)
+
+    def delete_playlist(self, playlist_id: str) -> Playlist:
+        tidal_playlist = self._client.playlist(playlist_id)
+        tidal_playlist.delete()
+        playlist = Playlist.from_tidal(tidal_playlist)
+
+        return playlist

@@ -5,7 +5,8 @@ from typing import Iterable
 import spotipy
 from dotenv import load_dotenv
 
-from musync.common.entity import Artist, Origin, Playlist, Track, User
+# from musync.common.entity import Artist, Origin, Playlist, Track, User
+from musync.app.models import Artist, Origin, Playlist, Track, User
 from musync.common.error import NotConnectedWarning
 from musync.common.session import Session
 
@@ -42,6 +43,13 @@ class SpotifySession(Session):
             if exc.http_status == 401:
                 return False
             raise exc
+
+    def load_playlist(self, playlist_id: str) -> Playlist | None:
+        try:
+            playlist_response = self._client.playlist(playlist_id)
+            return Playlist.from_spotify(playlist_response)
+        except spotipy.exceptions.SpotifyException:
+            return None
 
     def load_playlists(self) -> list[Playlist]:
         if not self.check_login():
@@ -115,3 +123,25 @@ class SpotifySession(Session):
         client_response = self._client.playlist(playlist_id)
 
         return Playlist.from_spotify(client_response)
+
+    def create_playlist(
+        self,
+        title: str,
+        description: str = "This playlist was created by https://github.com/klepp0/musync 🎺",
+        public: bool = False,
+    ) -> Playlist:
+        playlist_response = self._client.user_playlist_create(
+            self.user.user_id,
+            title,
+            public=public,
+            description=description,
+        )
+
+        return Playlist.from_spotify(playlist_response)
+
+    def delete_playlist(self, playlist_id: str) -> Playlist:
+        playlist_response = self._client.playlist(playlist_id)
+        playlist = Playlist.from_spotify(playlist_response)
+        self._client.current_user_unfollow_playlist(playlist.playlist_id)
+
+        return playlist
