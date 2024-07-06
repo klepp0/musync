@@ -30,7 +30,7 @@ def get_playlist(
                 status_code=400,
                 detail=f"Origin must be either 'spotify' or 'tidal' ({origin=}).",
             )
-            
+
     return session.load_playlist(playlist_id)
 
 
