@@ -24,4 +24,4 @@ COPY . /app
 EXPOSE 8000
 
 # Command to run the FastAPI app with Uvicorn
-CMD ["poetry", "run", "uvicorn", "musync.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "musync.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
