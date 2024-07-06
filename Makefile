@@ -26,8 +26,7 @@ stop: ## Stop the Docker container
 rm: ## Remove the Docker container
 	docker rm $(CONTAINER_NAME)
 
-restart: ## Rebuild and restart the Docker container
-	stop rm build run
+restart: stop rm build run ## Rebuild and restart the Docker container
 
 logs: ## Show logs from the Docker container
 	docker logs -f $(CONTAINER_NAME)
