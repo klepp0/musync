@@ -76,6 +76,15 @@ def test_session_user(tidal_session):
     assert isinstance(tidal_session.user, User)
 
 
+def test_session_load_not_existing_playlist(tidal_session):
+    assert tidal_session.load_playlist("foo") is None
+
+
+def test_session_load_existing_playlist(tidal_session):
+    tidal_playlist = tidal_session.load_playlist("281820fd-30e6-4240-9356-e07244a37bc8")
+    assert isinstance(tidal_playlist, Playlist)
+
+
 def test_session_load_playlists(tidal_session):
     assert all(isinstance(p, Playlist) for p in tidal_session.load_playlists())
 

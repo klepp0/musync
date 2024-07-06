@@ -79,7 +79,15 @@ def test_session_user(spotify_session):
     assert isinstance(spotify_session.user, User)
 
 
-def test_session_playlists(spotify_session):
+def test_session_load_playlist_not_existing(spotify_session):
+    assert spotify_session.load_playlist("foo") is None
+
+
+def test_session_load_existing_playlist(spotify_session):
+    assert isinstance(spotify_session.load_playlist("37i9dQZF1DX4wta20PHgwo"), Playlist)
+
+
+def test_session_load_playlists(spotify_session):
     assert all(isinstance(p, Playlist) for p in spotify_session.load_playlists())
 
 
