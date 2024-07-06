@@ -2,8 +2,7 @@ import pickle
 
 import pytest
 
-from musync.app.models.artist import Artist
-from musync.common.entity import Origin
+from musync.app.models import Artist, Origin
 from tests.unittests.app.models import DATA_DIR
 
 

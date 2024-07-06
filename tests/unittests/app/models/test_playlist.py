@@ -2,8 +2,7 @@ import pickle
 
 import pytest
 
-from musync.app.models.playlist import Playlist
-from musync.common.entity.origin import Origin
+from musync.app.models import Origin, Playlist
 from tests.unittests.app.models import DATA_DIR
 
 

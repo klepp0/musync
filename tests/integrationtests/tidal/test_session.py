@@ -3,7 +3,8 @@ import pickle
 
 import pytest
 
-from musync.common.entity import Origin, Playlist, Track, User
+# from musync.common.entity import Origin, Playlist, Track, User
+from musync.app.models import Origin, Playlist, Track, User
 from musync.tidal import TidalSession
 from tests.unittests.common.entity import DATA_DIR
 

@@ -4,8 +4,7 @@ from datetime import datetime as dt
 import pytest
 import pytz
 
-from musync.app.models.track import Track
-from musync.common.entity.origin import Origin
+from musync.app.models import Origin, Track
 from tests.unittests.app.models import DATA_DIR
 
 
