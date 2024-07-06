@@ -4,7 +4,7 @@ PROJECT_DIR=$(shell pwd)
 
 .DEFAULT_GOAL := help
 
-.PHONY: help build run stop rm restart logs
+.PHONY: help build run stop rm restart logs shell
 
 help: ## Display this help message
 	@echo "Usage:"
@@ -31,3 +31,6 @@ restart: ## Rebuild and restart the Docker container
 
 logs: ## Show logs from the Docker container
 	docker logs -f $(CONTAINER_NAME)
+
+shell: ## Access the Docker container interactively
+	docker exec -it $(CONTAINER_NAME) /bin/bash
