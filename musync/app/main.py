@@ -1,12 +1,13 @@
 import uvicorn
 from fastapi import FastAPI
 
-from .routes import playlists, tracks
+from .routes import playlists, tracks, sync
 
 app = FastAPI()
 
 app.include_router(tracks.router)
 app.include_router(playlists.router)
+app.include_router(sync.router)
 
 
 @app.get("/")
