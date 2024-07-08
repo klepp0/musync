@@ -86,7 +86,8 @@ def create_playlist(title: str, origin: Literal["spotify", "tidal"]) -> Playlist
             )
 
     new_playlist = session.create_playlist(title)
-    logger.info(f"Created playlist: {new_playlist}")
+
+    logger.info("Created playlist: %s", new_playlist)
 
     return new_playlist
 
@@ -118,7 +119,7 @@ def add_tracks_to_playlist(
     tracks = [session.load_track(_id) for _id in track_ids]
     updated_playlist = session.add_to_playlist(playlist, tracks)
 
-    logger.info(f"Added {tracks=} to playlist: {updated_playlist}")
+    logger.info("Added %s to playlist: %s", tracks, updated_playlist)
 
     return updated_playlist
 
@@ -147,6 +148,6 @@ def delete_playlist(
             detail=f"Playlist with ID {playlist_id} not found.",
         )
 
-    logger.info(f"Deleted playlist: {deleted_playlist}")
+    logger.info("Deleted playlist: %s", deleted_playlist)
 
     return deleted_playlist

@@ -59,7 +59,11 @@ def sync_playlists(
     n_added_2 = updated_playlist2.n_tracks - playlist2.n_tracks
 
     logger.info(
-        f"Synced playlists! Added {n_added_1} tracks to {updated_playlist1} and {n_added_2} tracks to {updated_playlist2}."
+        "Synced playlists! Added %d tracks to %s and %d tracks to %s.",
+        n_added_1,
+        playlist1,
+        n_added_2,
+        playlist2,
     )
 
     return updated_playlist1, updated_playlist2
