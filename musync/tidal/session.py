@@ -11,6 +11,7 @@ from musync.common.error import (
     IncompatibleEntityError,
     MissingPrivilegesError,
     NotConnectedWarning,
+    TrackNotFoundError,
 )
 from musync.common.session import Session
 
@@ -50,7 +51,7 @@ class TidalSession(Session):
     def load_track(self, track_id: str) -> Track:
         track = self._client.track(track_id)
         if not isinstance(track, tidalapi.Track):
-            raise ValueError(f"Track with ID {track_id} not found.")
+            raise TrackNotFoundError(f"Track with ID {track_id} not found.")
 
         return Track.from_tidal(track)
 
