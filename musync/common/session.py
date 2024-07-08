@@ -49,7 +49,6 @@ class Session(ABC):
         self,
         title: str,
         description: str = "This playlist was created by https://github.com/klepp0/musync 🎺",
-        public: bool = False,
     ) -> Playlist:
         pass
 

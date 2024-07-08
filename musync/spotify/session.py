@@ -132,12 +132,11 @@ class SpotifySession(Session):
         self,
         title: str,
         description: str = "This playlist was created by https://github.com/klepp0/musync 🎺",
-        public: bool = False,
     ) -> Playlist:
         playlist_response = self._client.user_playlist_create(
             self.user.user_id,
             title,
-            public=public,
+            public=False,
             description=description,
         )
 
