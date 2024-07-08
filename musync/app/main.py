@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 
-from .routes import playlists, tracks, sync
+from .routes import playlists, sync, tracks
 
 app = FastAPI()
 
