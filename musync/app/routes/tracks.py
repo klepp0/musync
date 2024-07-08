@@ -15,11 +15,9 @@ def get_track(track_id: str, origin: Literal["spotify", "tidal"]) -> Optional[Tr
     match origin:
         case "spotify":
             session = SpotifySession()
-            track_response = session._client.track(track_id)
-            return Track.from_spotify(track_response)
         case "tidal":
             session = TidalSession()
-            track_response = session._client.track(track_id)
-            return Track.from_tidal(track_response)
         case _:
             raise ValueError(f"Origin must be either 'spotify' or 'tidal' ({origin=}).")
+
+    return session.load_track(track_id)
