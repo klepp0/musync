@@ -72,7 +72,7 @@ class SyncManager:
             if dest_playlist.owner_id == self._session1.user.user_id:
                 self.sync_playlists(src_playlist, dest_playlist)
 
-    def sync_playlists(self, src_playlist, dest_playlist) -> None:
+    def sync_playlists(self, src_playlist, dest_playlist) -> Playlist:
         if (
             dest_playlist.origin == self._session1.user.origin
             and dest_playlist.owner_id == self._session1.user.user_id
@@ -104,5 +104,7 @@ class SyncManager:
             else:
                 missing_tracks_dest.append(dest_track)
 
-        if len(missing_tracks_dest) > 0:
-            dest_session.add_to_playlist(dest_playlist, missing_tracks_dest)
+        if len(missing_tracks_dest) == 0:
+            return dest_playlist
+
+        return dest_session.add_to_playlist(dest_playlist, missing_tracks_dest)
