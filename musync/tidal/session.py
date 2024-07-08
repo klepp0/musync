@@ -47,6 +47,13 @@ class TidalSession(Session):
 
         return [Track.from_tidal(t) for t in tidal_playlist.tracks()]
 
+    def load_track(self, track_id: str) -> Track:
+        track = self._client.track(track_id)
+        if not isinstance(track, tidalapi.Track):
+            raise ValueError(f"Track with ID {track_id} not found.")
+
+        return Track.from_tidal(track)
+
     def find_track(self, track: Track) -> Track | None:
         query = track.name
 

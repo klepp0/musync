@@ -82,6 +82,10 @@ class SpotifySession(Session):
 
         return tracks
 
+    def load_track(self, track_id: str) -> Track:
+        track = self._client.track(track_id)
+        return Track.from_spotify(track)
+
     def find_track(self, track: Track) -> Track | None:
         query = track.name
 

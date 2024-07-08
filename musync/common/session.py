@@ -33,6 +33,10 @@ class Session(ABC):
         pass
 
     @abstractmethod
+    def load_track(self, playlist_id: str) -> Track | None:
+        pass
+
+    @abstractmethod
     def find_track(self, track: Track) -> Track | None:
         pass
 
